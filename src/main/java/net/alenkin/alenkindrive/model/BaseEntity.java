@@ -1,7 +1,8 @@
-package edu.alenkin.model;
+package net.alenkin.alenkindrive.model;
 
-import com.google.gson.annotations.Expose;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,16 +12,14 @@ import javax.persistence.MappedSuperclass;
 /**
  * @author Alenkin Andrew
  * oxqq@ya.ru
- *
+ * <p>
  * The base super entity with property ID
  */
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
-    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
