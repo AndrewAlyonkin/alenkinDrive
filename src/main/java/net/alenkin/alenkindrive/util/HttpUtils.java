@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
  * @author Alenkin Andrew
  * oxqq@ya.ru
  */
-public class HttpUtil {
-    private HttpUtil() {
+public class HttpUtils {
+    private HttpUtils() {
     }
 
     public static <T> ResponseEntity<T> buildResponse(Object methodParameter, T entity) {

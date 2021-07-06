@@ -38,9 +38,10 @@ public class Event extends BaseEntity {
     }
 
     public Event(StoredFile storedFile, LocalDateTime downloadDateTime, User user) {
-        super();
-        this.storedFile = storedFile;
-        this.downloadDateTime = downloadDateTime;
-        this.user = user;
+        this(null, storedFile, downloadDateTime, user);
+    }
+
+    public Event(StoredFile storedFile, User user) {
+        this(null, storedFile, LocalDateTime.now(), user);
     }
 }

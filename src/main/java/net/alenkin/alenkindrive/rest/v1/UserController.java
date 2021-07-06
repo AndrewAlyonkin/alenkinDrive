@@ -8,10 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-import static net.alenkin.alenkindrive.util.HttpUtil.buildResponse;
+import static net.alenkin.alenkindrive.util.HttpUtils.buildResponse;
 
 /**
  * @author Alenkin Andrew

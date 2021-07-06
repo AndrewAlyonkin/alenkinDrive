@@ -2,14 +2,16 @@ package net.alenkin.alenkindrive.service;
 
 import com.sun.istack.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import net.alenkin.alenkindrive.model.Event;
 import net.alenkin.alenkindrive.model.StoredFile;
+import net.alenkin.alenkindrive.model.User;
 import net.alenkin.alenkindrive.repository.StoredFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static net.alenkin.alenkindrive.util.ValidationUtil.checkNotFoundWithId;
+import static net.alenkin.alenkindrive.util.ValidationUtils.checkNotFoundWithId;
 
 /**
  * @author Alenkin Andrew
@@ -20,6 +22,12 @@ import static net.alenkin.alenkindrive.util.ValidationUtil.checkNotFoundWithId;
 public class StorageFileServiceImpl implements StoredFileService {
 
     private final StoredFileRepository repository;
+
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public StorageFileServiceImpl(StoredFileRepository repository) {
@@ -39,7 +47,16 @@ public class StorageFileServiceImpl implements StoredFileService {
 
     public StoredFile get(Long id, Long userId) {
         log.info("Get file id = {}", id);
-        return repository.getByIdAndUserId(id, userId);
+        StoredFile file = repository.getByIdAndUserId(id, userId);
+        if (file != null) {
+
+            //TODO: Set current user from security context
+            User user = userService.get(userId);
+
+            Event downloadEvent = new Event(file, user);
+            eventService.create(downloadEvent);
+        }
+        return file;
     }
 
     public List<StoredFile> getAllByUserId(long userId) {

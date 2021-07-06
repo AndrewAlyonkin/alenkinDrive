@@ -4,8 +4,8 @@ package net.alenkin.alenkindrive.util;
  * @author Alenkin Andrew
  * oxqq@ya.ru
  */
-public class ValidationUtil {
-    private ValidationUtil() {
+public class ValidationUtils {
+    private ValidationUtils() {
     }
 
     public static <T> T checkNotFoundWithId(T object, long id) {

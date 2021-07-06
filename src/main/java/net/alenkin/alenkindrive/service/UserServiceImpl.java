@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static net.alenkin.alenkindrive.util.ValidationUtil.checkNotFoundWithId;
+import static net.alenkin.alenkindrive.util.ValidationUtils.checkNotFoundWithId;
 
 /**
  * @author Alenkin Andrew
@@ -49,5 +49,9 @@ public class UserServiceImpl implements UserService {
     public void delete(long id) {
         log.info("Delete user id = {}", id);
         checkNotFoundWithId(repository.delete(id) != 0, id);
+    }
+
+    public User getGhost(Long userId){
+        return repository.getOne(userId);
     }
 }

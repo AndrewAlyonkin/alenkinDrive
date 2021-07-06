@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static net.alenkin.alenkindrive.util.HttpUtil.buildResponse;
+import static net.alenkin.alenkindrive.util.HttpUtils.buildResponse;
 
 /**
  * @author Alenkin Andrew

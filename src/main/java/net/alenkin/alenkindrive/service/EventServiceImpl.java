@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static net.alenkin.alenkindrive.util.ValidationUtil.checkNotFoundWithId;
+import static net.alenkin.alenkindrive.util.ValidationUtils.checkNotFoundWithId;
 
 /**
  * @author Alenkin Andrew

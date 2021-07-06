@@ -19,4 +19,6 @@ public interface UserService {
     User update(@NonNull User user);
 
     void delete(long id);
+
+    User getGhost(Long userId);
 }

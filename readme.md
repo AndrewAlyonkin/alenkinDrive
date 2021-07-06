@@ -1,34 +1,49 @@
 # Read Me First
+Технологии: Java, MySQL, Spring (IoC, Data, Security), AWS SDK,
+MySQL, Travis, Docker, JUnit, Mockito, Maven.
 
-The following was discovered as part of building this project:
+Приложение представляет собой REST API, которое взаимодействует с файловым хранилищем
+AWS S3 и предоставляет возможность получать доступ к файлам и истории загрузок.  
+Сущности:  
+User  
+Event (User user, File file)  
+File (id, location, ...)  
+User -> … List<Events> events ...  
 
-* The JVM level was changed from '16' to '11', review
-  the [JDK Version Range](https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions#jdk-version-range)
-  on the wiki for more details.
+Приложение взаимодействует с S3 с помощью AWS SDK.  
+Уровни доступа:  
+ADMIN - полный доступ к приложению  
+MODERATOR - добавление и удаление файлов  
+USER - только чтение всех данных, кроме User  
 
-# Getting Started
+Служебная информация приложения хранится в AWS RDS.
 
-### Reference Documentation
+Тестами покрыты слои сервиса и контроллера. Слой сервиса тестируется с помощью Mockito,
+слой контроллера тестируется с помощью Spring MockMVC.
 
-For further reference, please consider the following sections:
+Доступ к REST API предоставляется по JWT - токену.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.12.RELEASE/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.3.12.RELEASE/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#boot-features-security)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+##EndPoins для использования REST API приложения: 
+###Пользователи
+>GET v1/users/ - получить информацию о всех пользователях приложения  
+>GET v1/users/{userId} - получить подробную информацию о пользователе  
+>POST v1/users/ - добавить нового пользователя  
+>PUT v1/users/ - обновить информацию о пользователе  
+>DELETE v1/users/{userId} - далить пользователя с userId  
 
-### Guides
+### Файлы
+>GET v1/files/{userId} - получить все файлы для пользователя с userId  
+>GET v1/files/{userId}/{fileId} - получить доступ к файлу с fileId пользователя с userId  
+>PUT v1/files/{userId}/{fileId} - обновить файл с fileId для пользователя с userId  
+>POST v1/files/{userId} - загрузить файл для пользователя с userId  
+>DELETE v1/files/{userId}/{fileId} - далить файл с fileId пользователя с userId  
 
-The following guides illustrate how to use some features concretely:
+### История загрузок
+>GET v1/events/{userId}/{id} - получить информацию о загрузке с id пользователя с userId  
+>GET v1/events/{userId} - получить информацию о загрузках пользователя с userId  
+>PUT v1/events/{userId}/{id} - редактировать историю о загрузке с id для пользователя с userId  
+>POST v1/events/{userId} - вручную добавить информацию о загрузке(по умолчанию история формируется автоматически)  
+>DELETE v1/events/{userId}/{id} - очистить историю загрузки с id для пользователя с userId  
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+##Аутентификация и верификация в приложении
 
