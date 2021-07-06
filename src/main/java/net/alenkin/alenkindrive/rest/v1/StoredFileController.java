@@ -17,7 +17,7 @@ import static net.alenkin.alenkindrive.util.HttpUtil.buildResponse;
  * oxqq@ya.ru
  */
 @RestController
-@RequestMapping("/v1/files/")
+@RequestMapping("v1/files/")
 public class StoredFileController {
     private final StoredFileService service;
 
@@ -26,9 +26,9 @@ public class StoredFileController {
         this.service = service;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<StoredFile> get(@PathVariable("id") Long id) {
-        return buildResponse(id, service.get(id));
+    @GetMapping("{userId}/{id}")
+    public ResponseEntity<StoredFile> get(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        return buildResponse(id, service.get(id, userId));
     }
 
     @PostMapping("")
@@ -41,15 +41,15 @@ public class StoredFileController {
         return buildResponse(file, service.update(file));
     }
 
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<StoredFile> delete(@PathVariable("id") Long id) {
-        service.delete(id);
+    @DeleteMapping(value = "{userId}/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        service.delete(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<StoredFile>> getAll(@PathVariable("id") Long id) {
-        List<StoredFile> files = service.getAllByUserId(id);
+    @GetMapping("{userId}")
+    public ResponseEntity<List<StoredFile>> getAll(@PathVariable("userId") Long userId) {
+        List<StoredFile> files = service.getAllByUserId(userId);
         return buildResponse(files, !CollectionUtils.isEmpty(files));
     }
 }

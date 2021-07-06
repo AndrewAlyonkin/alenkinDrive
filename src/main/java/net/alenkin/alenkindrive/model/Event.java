@@ -27,7 +27,7 @@ public class Event extends BaseEntity {
     @Column(name = "download_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime downloadDateTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public Event(Long id, StoredFile storedFile, LocalDateTime downloadDateTime, User user) {

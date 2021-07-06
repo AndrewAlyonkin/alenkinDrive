@@ -17,7 +17,7 @@ import static net.alenkin.alenkindrive.util.HttpUtil.buildResponse;
  * oxqq@ya.ru
  */
 @RestController
-@RequestMapping("/v1/events/")
+@RequestMapping("v1/events/")
 public class EventController {
     private final EventService service;
 
@@ -26,9 +26,9 @@ public class EventController {
         this.service = service;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Event> get(@PathVariable("id") Long id) {
-        return buildResponse(id, service.get(id));
+    @GetMapping("{userId}/{id}")
+    public ResponseEntity<Event> get(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        return buildResponse(id, service.get(id, userId));
     }
 
     @PostMapping("")
@@ -41,15 +41,15 @@ public class EventController {
         return buildResponse(event, service.update(event));
     }
 
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<Event> delete(@PathVariable("id") Long id) {
-        service.delete(id);
+    @DeleteMapping(value = "{userId}/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        service.delete(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<Event>> getAll(@PathVariable("id") Long id) {
-        List<Event> events = service.getAllByUserId(id);
+    @GetMapping("{userId}")
+    public ResponseEntity<List<Event>> getAll(@PathVariable("userId") Long userId) {
+        List<Event> events = service.getAllByUserId(userId);
         return buildResponse(events, !CollectionUtils.isEmpty(events));
     }
 }

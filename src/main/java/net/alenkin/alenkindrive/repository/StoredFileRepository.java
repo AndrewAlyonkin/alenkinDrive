@@ -21,6 +21,8 @@ public interface StoredFileRepository extends JpaRepository<StoredFile, Long> {
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM files f WHERE f.id=:id")
-    Long delete(@Param("id") Long id);
+    @Query("DELETE FROM StoredFile f WHERE f.id=:id and f.user.id=:userId")
+    int deleteByIdAndUserId(@Param("id") Long id, @Param("userId") Long userId);
+
+    StoredFile getByIdAndUserId(Long id, Long userId);
 }

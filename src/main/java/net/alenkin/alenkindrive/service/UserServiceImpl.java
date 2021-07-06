@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     public User get(long id) {
         log.info("Get user id = {}", id);
-        return repository.getOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     public List<User> getAll() {

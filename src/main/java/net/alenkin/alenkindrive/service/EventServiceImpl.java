@@ -35,9 +35,9 @@ public class EventServiceImpl implements EventService {
         return checkNotFoundWithId(repository.save(event), eventId);
     }
 
-    public Event get(Long id) {
+    public Event get(Long id, Long userId) {
         log.info("Get event id = {}", id);
-        return repository.getOne(id);
+        return repository.getByIdAndUserId(id, userId);
     }
 
     public List<Event> getAllByUserId(Long userId) {
@@ -45,9 +45,9 @@ public class EventServiceImpl implements EventService {
         return repository.getAllByUserId(userId);
     }
 
-    public void delete(long id) {
+    public void delete(long id, Long userId) {
         log.info("Delete event id = {}", id);
-        checkNotFoundWithId(repository.delete(id) != 0, id);
+        checkNotFoundWithId(repository.deleteByIdAndUserId(id, userId) != 0, id);
     }
 
 }

@@ -22,7 +22,7 @@ public class StoredFile extends BaseEntity {
     @Column(name = "size", columnDefinition = "BIGINT")
     private long size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public StoredFile(Long id, String fileURI, long size, User user) {

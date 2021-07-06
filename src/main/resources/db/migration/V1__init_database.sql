@@ -30,7 +30,7 @@ CREATE TABLE files
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- init events table
+--init events table
 CREATE TABLE events
 (
     id            BIGINT PRIMARY KEY DEFAULT nextval('global_seq'),

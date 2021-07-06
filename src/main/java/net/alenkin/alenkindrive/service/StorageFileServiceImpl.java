@@ -37,9 +37,9 @@ public class StorageFileServiceImpl implements StoredFileService {
         return checkNotFoundWithId(repository.save(file), fileId);
     }
 
-    public StoredFile get(long id) {
+    public StoredFile get(Long id, Long userId) {
         log.info("Get file id = {}", id);
-        return repository.getOne(id);
+        return repository.getByIdAndUserId(id, userId);
     }
 
     public List<StoredFile> getAllByUserId(long userId) {
@@ -47,8 +47,8 @@ public class StorageFileServiceImpl implements StoredFileService {
         return repository.getAllByUserId(userId);
     }
 
-    public void delete(long id) {
+    public void delete(long id, Long userId) {
         log.info("delete file id = {}", id);
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.deleteByIdAndUserId(id, userId) != 0, id);
     }
 }

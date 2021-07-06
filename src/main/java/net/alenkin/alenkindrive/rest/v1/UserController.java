@@ -18,7 +18,7 @@ import static net.alenkin.alenkindrive.util.HttpUtil.buildResponse;
  * oxqq@ya.ru
  */
 @RestController
-@RequestMapping("/v1/users/")
+@RequestMapping("v1/users/")
 public class UserController {
     private final UserService service;
 
@@ -33,17 +33,17 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<User> create(@RequestBody @Valid User user) {
+    public ResponseEntity<User> create(User user) {
         return buildResponse(user, service.create(user));
     }
 
     @PutMapping("")
-    public ResponseEntity<User> update(@RequestBody @Valid User user) {
+    public ResponseEntity<User> update(User user) {
         return buildResponse(user, service.update(user));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
