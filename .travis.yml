@@ -1,10 +1,10 @@
 language: java
 
-sudo: true
-
 notifications:
   email:
     recipients:
       - oxqq@ya.ru
     on_success: never
     on_failure: always
+before_install:
+  - chmod +x mvnw
