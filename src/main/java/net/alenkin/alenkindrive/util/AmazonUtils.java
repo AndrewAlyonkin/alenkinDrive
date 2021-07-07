@@ -24,12 +24,11 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@PropertySource("/amazon.properties")
 public class AmazonUtils {
 
-    private String first;
+    private String authKey;
 
-    private String second;
+    private String secretKey;
 
     private String bucket;
 
@@ -37,13 +36,13 @@ public class AmazonUtils {
 
     private AWSCredentials credentials;
 
-    public AmazonUtils(@Value("${amazonutils.firstCred}") String first,
-                       @Value("${amazonutils.secondCred}") String second,
-                       @Value("${amazonutils.bucket}") String bucket) {
-        this.first = first;
-        this.second = second;
+    public AmazonUtils(@Value("${first}") String authKey,
+                       @Value("${second") String secretKey,
+                       @Value("${bucket}") String bucket) {
+        this.authKey = authKey;
+        this.secretKey = secretKey;
         this.bucket = bucket;
-        credentials = new BasicAWSCredentials(first, second);
+        credentials = new BasicAWSCredentials(authKey, secretKey);
         s3client = AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))

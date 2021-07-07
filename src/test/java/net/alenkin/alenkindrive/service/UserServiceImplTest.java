@@ -1,5 +1,7 @@
 package net.alenkin.alenkindrive.service;
 
+import net.alenkin.alenkindrive.model.Role;
+import net.alenkin.alenkindrive.model.Status;
 import net.alenkin.alenkindrive.model.User;
 import net.alenkin.alenkindrive.repository.UserRepository;
 import org.junit.Assert;
@@ -49,7 +51,7 @@ class UserServiceImplTest {
         Mockito.reset(repository);
         testId = 1000L;
         testUser = new User(testId, "Test");
-        newUser = new User("New");
+        newUser = new User("New", Role.USER, Status.ACTIVE, "pass");
         savedNewUser = new User(100L, "Saved");
         idCaptor = ArgumentCaptor.forClass(Long.class);
         userCaptor = ArgumentCaptor.forClass(User.class);

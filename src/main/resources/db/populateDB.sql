@@ -10,9 +10,13 @@ FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 10000;
 
 INSERT INTO users (name)
-VALUES ('Chuck Norris');
-INSERT INTO users (name)
-VALUES ('Bruce Lee');
+VALUES ('user');
+
+INSERT INTO users (name, password, status, role)
+VALUES ('admin', 'admin', 'ACTIVE', 'ADMIN');
+
+INSERT INTO users (name, password, status, role)
+VALUES ('moderator', 'moderator', 'ACTIVE', 'MODERATOR');
 
 INSERT INTO files (file_uri, size, user_id)
 VALUES ('Chuck://test/testDir/testFile.pdf', 9000, 10000);

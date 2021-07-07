@@ -8,6 +8,7 @@ import net.alenkin.alenkindrive.util.AmazonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,11 +39,13 @@ public class StoredFileController {
     }
 
     @GetMapping("{userId}/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     public ResponseEntity<StoredFile> get(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
         return buildResponse(id, service.get(id, userId));
     }
 
     @PostMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public ResponseEntity<StoredFile> create(@RequestParam(value = "file") MultipartFile file, @PathVariable("userId")Long userId) {
         Long size = file.getSize();
         String url = amazon.uploadFile(file);
@@ -53,6 +56,7 @@ public class StoredFileController {
     }
 
     @PutMapping("{userId}/{id}")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public ResponseEntity<StoredFile> update(@RequestParam(value = "file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("userId") Long userId) {
         StoredFile savedFile = service.get(id, userId);
         if (savedFile == null) {
@@ -68,6 +72,7 @@ public class StoredFileController {
     }
 
     @DeleteMapping(value = "{userId}/{id}")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
         StoredFile savedFile = service.get(id, userId);
         if (savedFile == null) {
@@ -79,6 +84,7 @@ public class StoredFileController {
     }
 
     @GetMapping("{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     public ResponseEntity<List<StoredFile>> getAll(@PathVariable("userId") Long userId) {
         List<StoredFile> files = service.getAllByUserId(userId);
         return buildResponse(files, !CollectionUtils.isEmpty(files));
