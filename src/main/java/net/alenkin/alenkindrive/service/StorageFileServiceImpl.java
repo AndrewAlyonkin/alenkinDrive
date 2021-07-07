@@ -45,7 +45,7 @@ public class StorageFileServiceImpl implements StoredFileService {
         return checkNotFoundWithId(repository.save(file), fileId);
     }
 
-    public StoredFile get(Long id, Long userId) {
+    public StoredFile getByIdAndUserId(Long id, Long userId) {
         log.info("Get file id = {}", id);
         StoredFile file = repository.getByIdAndUserId(id, userId);
         if (file != null) {

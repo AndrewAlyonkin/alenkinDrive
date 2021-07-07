@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -83,6 +85,7 @@ class EventControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN", "MODERATOR", "USER"})
     void get() throws Exception {
         Mockito.when(service.get(ID, ID)).thenReturn(EVENT);
         this.mockMvc
@@ -99,6 +102,7 @@ class EventControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN", "MODERATOR", "USER"})
     void getFail() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/v1/events/")
@@ -139,6 +143,7 @@ class EventControllerTest {
 //    }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void delete() throws Exception {
         Mockito.doNothing().when(service).delete(ID, ID);
         this.mockMvc
@@ -151,6 +156,7 @@ class EventControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN", "MODERATOR", "USER"})
     void getAll() throws Exception {
         Mockito.when(service.getAllByUserId(ID)).thenReturn(List.of(EVENT, EVENT));
         this.mockMvc
@@ -170,5 +176,13 @@ class EventControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].storedFile.fileURI").value(forEventName))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].storedFile.size").value(size))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].storedFile.user.name").value(forEventName));
+    }
+
+    //SECURITY TESTS
+    @WithMockUser(roles = {"MODERATOR", "USER"})
+    @Test
+    void deleteDenied() {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                this::delete);
     }
 }

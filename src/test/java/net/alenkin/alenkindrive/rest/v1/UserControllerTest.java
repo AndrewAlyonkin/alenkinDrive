@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -28,6 +29,7 @@ import javax.servlet.ServletContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,6 +73,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void get() throws Exception {
         Mockito.when(service.get(ID)).thenReturn(USER);
         this.mockMvc
@@ -83,6 +86,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void create() throws Exception {
         Mockito.when(service.create(Mockito.any())).thenReturn(USER);
         this.mockMvc
@@ -95,6 +99,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void update() throws Exception {
         Mockito.when(service.update(Mockito.any())).thenReturn(USER);
         this.mockMvc
@@ -107,6 +112,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void delete() throws Exception {
         Mockito.doNothing().when(service).delete(ID);
         this.mockMvc
@@ -118,6 +124,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void getAll() throws Exception {
         Mockito.when(service.getAll()).thenReturn(List.of(USER, USER));
         this.mockMvc
@@ -129,5 +136,41 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(forUser))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(ID))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(forUser));
+    }
+
+    //SECURITY TESTS
+    @Test
+    @WithMockUser(roles = {"USER", "MODERATOR"})
+    void getAllDenied() {
+       assertThrows(org.springframework.web.util.NestedServletException.class,
+               this::getAll);
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER", "MODERATOR"})
+    void getDenied() {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                this::get);
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER", "MODERATOR"})
+    void createDenied() {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                this::create);
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER", "MODERATOR"})
+    void updateDenied() {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                this::update);
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER", "MODERATOR"})
+    void deleteDenied() {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                this::delete);
     }
 }

@@ -14,7 +14,7 @@ public interface StoredFileService {
 
     StoredFile update(@NotNull StoredFile file);
 
-    StoredFile get(Long id, Long userId);
+    StoredFile getByIdAndUserId(Long id, Long userId);
 
     List<StoredFile> getAllByUserId(long userId);
 

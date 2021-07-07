@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/AndrewAlyonkin/alenkinDrive.svg?branch=master)](https://travis-ci.com/AndrewAlyonkin/alenkinDrive)
 # Read Me First
 Технологии: Java, MySQL, Spring (IoC, Data, Security), AWS SDK,
 MySQL, Travis, Docker, JUnit, Mockito, Maven.

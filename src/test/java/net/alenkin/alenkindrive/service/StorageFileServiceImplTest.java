@@ -1,8 +1,10 @@
 package net.alenkin.alenkindrive.service;
 
+import net.alenkin.alenkindrive.model.Event;
 import net.alenkin.alenkindrive.model.StoredFile;
 import net.alenkin.alenkindrive.model.User;
 import net.alenkin.alenkindrive.repository.StoredFileRepository;
+import net.alenkin.alenkindrive.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,12 @@ class StorageFileServiceImplTest {
 
     @MockBean
     private StoredFileRepository repository;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private EventService eventService;
 
     private ArgumentCaptor<Long> idCaptor;
     private ArgumentCaptor<Long> userIdCaptor;
@@ -81,8 +89,10 @@ class StorageFileServiceImplTest {
 
     @Test
     void get() {
+        Mockito.when(userService.get(userId)).thenReturn(new User(userId, "test"));
+        Mockito.when(eventService.create(Mockito.any())).thenReturn(new Event());
         Mockito.when(repository.getByIdAndUserId(testId, userId)).thenReturn(testFile);
-        StoredFile current = service.get(testId, userId);
+        StoredFile current = service.getByIdAndUserId(testId, userId);
         Mockito.verify(repository).getByIdAndUserId(idCaptor.capture(), userIdCaptor.capture());
         assertEquals(testId, idCaptor.getValue());
         assertEquals(userId, userIdCaptor.getValue());
