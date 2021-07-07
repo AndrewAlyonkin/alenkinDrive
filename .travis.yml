@@ -1,0 +1,10 @@
+language: java
+
+sudo: false
+
+notifications:
+  email:
+    recipients:
+      - oxqq@ya.ru
+    on_success: never
+    on_failure: always
