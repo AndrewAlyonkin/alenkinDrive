@@ -6,6 +6,7 @@ import net.alenkin.alenkindrive.service.StoredFileService;
 import net.alenkin.alenkindrive.service.UserService;
 import net.alenkin.alenkindrive.util.AmazonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,8 +40,20 @@ public class StoredFileController {
 
     @GetMapping("{userId}/{id}")
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    public ResponseEntity<StoredFile> get(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
-        return buildResponse(id, service.getByIdAndUserId(id, userId));
+    public ResponseEntity<ByteArrayResource> get(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        StoredFile file = service.getByIdAndUserId(id, userId);
+        if (file == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        String filleURI = file.getFileURI();
+        byte[] data = amazon.downloadFile(filleURI);
+        ByteArrayResource resource = new ByteArrayResource(data);
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + filleURI + "\"")
+                .body(resource);
     }
 
     @PostMapping("/{userId}")

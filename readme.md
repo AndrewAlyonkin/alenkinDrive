@@ -18,8 +18,8 @@ User -> … List<Events> events ...
 
 Доступ к REST API предоставляется по JWT - токену.
 
-##EndPoins для использования REST API приложения: 
-###Пользователи
+## EndPoins для использования REST API приложения:   
+## Пользователи  
 >GET v1/users/ - получить информацию о всех пользователях приложения  
 >GET v1/users/{userId} - получить подробную информацию о пользователе  
 >POST v1/users/ - добавить нового пользователя  
@@ -28,7 +28,7 @@ User -> … List<Events> events ...
 
 ### Файлы
 >GET v1/files/{userId} - получить все файлы для пользователя с userId  
->GET v1/files/{userId}/{fileId} - получить доступ к файлу с fileId пользователя с userId  
+>GET v1/files/{userId}/{fileId} - скачать файл с fileId пользователя с userId  
 >PUT v1/files/{userId}/{fileId} - обновить файл с fileId для пользователя с userId  
 >POST v1/files/{userId} - загрузить файл для пользователя с userId. Прикрепить к телу запроса фаил с ключем 'file'   
 >DELETE v1/files/{userId}/{fileId} - удалить файл с fileId пользователя с userId  

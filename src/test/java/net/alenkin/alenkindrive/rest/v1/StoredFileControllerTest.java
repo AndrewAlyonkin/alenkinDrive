@@ -86,15 +86,12 @@ class StoredFileControllerTest {
     @WithMockUser(roles = {"ADMIN", "MODERATOR", "USER"})
     void get() throws Exception {
         Mockito.when(service.getByIdAndUserId(ID, ID)).thenReturn(FILE);
+        Mockito.when(amazon.downloadFile(Mockito.any())).thenReturn(new byte[]{});
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/v1/files/{userId}/{id}", ID, ID)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ID))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fileURI").value(forFile))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size").value(size))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user.name").value(forFile));
+                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
     }
 
 //    @Test

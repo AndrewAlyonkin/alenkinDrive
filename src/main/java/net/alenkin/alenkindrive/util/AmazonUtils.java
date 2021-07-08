@@ -8,9 +8,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,23 +28,17 @@ import java.io.IOException;
 @Component
 public class AmazonUtils {
 
-    private String authKey;
-
-    private String secretKey;
-
     private String bucket;
 
     private AmazonS3 s3client;
 
     private AWSCredentials credentials;
 
-    public AmazonUtils(@Value("${first}") String authKey,
-                       @Value("${second") String secretKey,
-                       @Value("${bucket}") String bucket) {
-        this.authKey = authKey;
-        this.secretKey = secretKey;
+    public AmazonUtils(@Value("${aws.access}") String accessKey,
+                       @Value("${aws.secret}") String secretKey,
+                       @Value("${aws.bucket}") String bucket) {
         this.bucket = bucket;
-        credentials = new BasicAWSCredentials(authKey, secretKey);
+        credentials = new BasicAWSCredentials(accessKey, secretKey);
         s3client = AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
@@ -64,6 +60,19 @@ public class AmazonUtils {
         return uri + " removed ...";
     }
 
+    public byte[] downloadFile(String fileUrl) {
+        AmazonS3URI uri = new AmazonS3URI(fileUrl);
+        S3Object s3Object = s3client.getObject(uri.getBucket(), uri.getKey());
+        S3ObjectInputStream inputStream = s3Object.getObjectContent();
+        try {
+            byte[] content = IOUtils.toByteArray(inputStream);
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(file.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
@@ -73,5 +82,4 @@ public class AmazonUtils {
         }
         return convertedFile;
     }
-
 }
