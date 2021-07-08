@@ -3,6 +3,8 @@
 Технологии: Java, MySQL, Spring (IoC, Data, Security), AWS SDK,
 MySQL, Travis, Docker, JUnit, Mockito, Maven.
 
+Приложение развернуто на [Amazon Elastic Beanstalk](http://alenkindrive-env.eba-fbwprbne.ap-northeast-1.elasticbeanstalk.com/)
+
 Приложение представляет собой REST API, которое взаимодействует с файловым хранилищем
 AWS S3 и предоставляет возможность получать доступ к файлам и истории загрузок.  
 Сущности:  
