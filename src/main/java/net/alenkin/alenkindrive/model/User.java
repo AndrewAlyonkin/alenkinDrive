@@ -1,7 +1,6 @@
 package net.alenkin.alenkindrive.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +30,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", columnDefinition = "VARCHAR")
     private String password;
 
@@ -44,19 +44,8 @@ public class User extends BaseEntity {
         this(null, name);
     }
 
-    public User(User user) {
-        this(user.getId(), user.getName());
-    }
-
     public User(String name, Role role, Status status, String password) {
-        this.name = name;
-        this.role = role;
-        this.status = status;
-        this.password = password;
-    }
-
-    public User(Long id, String name, Role role, Status status, String password) {
-        super(id);
+        super();
         this.name = name;
         this.role = role;
         this.status = status;

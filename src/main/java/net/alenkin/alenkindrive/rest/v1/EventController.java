@@ -35,13 +35,13 @@ public class EventController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Event> create(Event event) {
+    public ResponseEntity<Event> create(@RequestBody Event event) {
         return buildResponse(event, service.create(event));
     }
 
     @PutMapping("")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Event> update(Event event) {
+    public ResponseEntity<Event> update(@RequestBody Event event) {
         return buildResponse(event, service.update(event));
     }
 

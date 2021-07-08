@@ -30,8 +30,8 @@ User -> … List<Events> events ...
 >GET v1/files/{userId} - получить все файлы для пользователя с userId  
 >GET v1/files/{userId}/{fileId} - получить доступ к файлу с fileId пользователя с userId  
 >PUT v1/files/{userId}/{fileId} - обновить файл с fileId для пользователя с userId  
->POST v1/files/{userId} - загрузить файл для пользователя с userId  
->DELETE v1/files/{userId}/{fileId} - далить файл с fileId пользователя с userId  
+>POST v1/files/{userId} - загрузить файл для пользователя с userId. Прикрепить к телу запроса фаил с ключем 'file'   
+>DELETE v1/files/{userId}/{fileId} - удалить файл с fileId пользователя с userId  
 
 ### История загрузок
 >GET v1/events/{userId}/{id} - получить информацию о загрузке с id пользователя с userId  
@@ -52,3 +52,11 @@ User -> … List<Events> events ...
 |ADMIN|admin |admin |
 |MODERATOR|moderator |moderator |
 |USER|user |user |
+
+## Для авторизации в приложении отправить запрос
+> POST /v1/auth/login  
+> с парой name/password в формате {"name":"admin","password":"admin"}  
+>  - в теле ответа придет JWT токен для доступа к приложению  
+>  - полученный токен установить в качестве заголовка последующих запросов с ключем Authorization  
+>  - токен будет действителен в течение часа
+>  - при входе в приложение с другой парой имя пользователя/пароль JWT токен пересчитывается и его нужно обновить в заголовке запроса

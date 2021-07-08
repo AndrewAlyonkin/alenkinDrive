@@ -38,8 +38,6 @@ class StorageFileServiceImplTest {
     @MockBean
     private StoredFileRepository repository;
 
-    @MockBean
-    private UserService userService;
 
     @MockBean
     private EventService eventService;
@@ -89,7 +87,6 @@ class StorageFileServiceImplTest {
 
     @Test
     void get() {
-        Mockito.when(userService.get(userId)).thenReturn(new User(userId, "test"));
         Mockito.when(eventService.create(Mockito.any())).thenReturn(new Event());
         Mockito.when(repository.getByIdAndUserId(testId, userId)).thenReturn(testFile);
         StoredFile current = service.getByIdAndUserId(testId, userId);

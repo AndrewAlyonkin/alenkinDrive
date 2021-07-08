@@ -1,6 +1,7 @@
 package net.alenkin.alenkindrive.rest.v1;
 
 import net.alenkin.alenkindrive.model.StoredFile;
+import net.alenkin.alenkindrive.security.UserDetailsServiceImpl;
 import net.alenkin.alenkindrive.service.StoredFileService;
 import net.alenkin.alenkindrive.service.UserService;
 import net.alenkin.alenkindrive.util.AmazonUtils;
@@ -46,9 +47,8 @@ public class StoredFileController {
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public ResponseEntity<StoredFile> create(@RequestParam(value = "file") MultipartFile file, @PathVariable("userId")Long userId) {
         long size = file.getSize();
-        String url = amazon.uploadFile(file);
-        //TODO: set user from security context
-        StoredFile savedFile = new StoredFile(url, size, userService.get(userId));
+        String url = amazon.uploadFile(file); //TODO
+        StoredFile savedFile = new StoredFile(url, size, userService.get(UserDetailsServiceImpl.getAuthUserId()));
 
         return buildResponse(file, service.create(savedFile));
     }
@@ -62,8 +62,8 @@ public class StoredFileController {
         }
         amazon.deleteFile(savedFile.getFileURI());
         long size = file.getSize();
-        String url = amazon.uploadFile(file);
-        //TODO: set user from security context
+        String url = amazon.uploadFile(file);  //TODO
+        savedFile.setUser(userService.get(UserDetailsServiceImpl.getAuthUserId()));
         savedFile.setSize(size);
         savedFile.setFileURI(url);
         return buildResponse(file, service.update(savedFile));

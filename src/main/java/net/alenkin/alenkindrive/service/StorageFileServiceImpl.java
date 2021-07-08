@@ -6,6 +6,7 @@ import net.alenkin.alenkindrive.model.Event;
 import net.alenkin.alenkindrive.model.StoredFile;
 import net.alenkin.alenkindrive.model.User;
 import net.alenkin.alenkindrive.repository.StoredFileRepository;
+import net.alenkin.alenkindrive.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +49,8 @@ public class StorageFileServiceImpl implements StoredFileService {
     public StoredFile getByIdAndUserId(Long id, Long userId) {
         log.info("Get file id = {}", id);
         StoredFile file = repository.getByIdAndUserId(id, userId);
-        if (file != null) {
-
-            //TODO: Set current user from security context
-            User user = userService.get(userId);
-
+        if (file != null) { //TODO
+            User user = userService.get(UserDetailsServiceImpl.getAuthUserId());
             Event downloadEvent = new Event(file, user);
             eventService.create(downloadEvent);
         }

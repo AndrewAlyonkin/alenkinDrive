@@ -35,12 +35,7 @@ public class UserController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> create(User user) {
-        System.out.println(user.getName());
-        System.out.println(user.getId());
-        System.out.println(user.getPassword());
-        System.out.println(user.getRole());
-        System.out.println(user.getStatus());
+    public ResponseEntity<User> create(@RequestBody User user) {
         return buildResponse(user, service.create(user));
     }
 
