@@ -60,3 +60,16 @@ User -> … List<Events> events ...
 >  - полученный токен установить в качестве заголовка последующих запросов с ключем Authorization  
 >  - токен будет действителен в течение часа
 >  - при входе в приложение с другой парой имя пользователя/пароль JWT токен пересчитывается и его нужно обновить в заголовке запроса
+
+## При запуске приложения локально при старте Java установить переменные окружения:
+Приложение работает с AWS RDS  AWS S3:  
+> Ключи доступа у Amazon ewb services S3  
+> aws.access=  
+> aws.secret=  
+> aws.bucket=  
+
+Также в application.properties откорректировать credentials подключения к AWS RDS, в которой будет храниться служебная информация проиложения
+> spring.datasource.url=  
+> spring.datasource.driver-class-name=
+> spring.datasource.username=
+> spring.datasource.password=
