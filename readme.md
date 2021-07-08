@@ -64,9 +64,9 @@ User -> … List<Events> events ...
 ## При запуске приложения локально при старте Java установить переменные окружения:
 Приложение работает с AWS RDS  AWS S3:  
 > Ключи доступа у Amazon ewb services S3  
-> aws.access=  
-> aws.secret=  
-> aws.bucket=  
+> access=  
+> secret=  
+> bucket=  
 
 Также в application.properties откорректировать credentials подключения к AWS RDS, в которой будет храниться служебная информация проиложения
 > spring.datasource.url=  
