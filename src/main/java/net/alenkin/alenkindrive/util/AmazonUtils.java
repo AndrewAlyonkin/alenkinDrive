@@ -34,9 +34,9 @@ public class AmazonUtils {
 
     private AWSCredentials credentials;
 
-    public AmazonUtils(@Value("${aws.access}") String accessKey,
-                       @Value("${aws.secret}") String secretKey,
-                       @Value("${aws.bucket}") String bucket) {
+    public AmazonUtils(@Value("${access}") String accessKey,
+                       @Value("${secret}") String secretKey,
+                       @Value("${bucket}") String bucket) {
         this.bucket = bucket;
         credentials = new BasicAWSCredentials(accessKey, secretKey);
         s3client = AmazonS3ClientBuilder
